@@ -1,5 +1,7 @@
 #TASK SPLIT
-
+## tech
+    express for routing (since it a node package)
+    socket IO
 ## 1
 The employee interfaces are for managing race operations. These screens require an admin password to unlock. These are:
 
