@@ -1,1 +1,46 @@
 @import url("/shared/base.css");
+
+.control-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.mode-button {
+  min-height: 76px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #101616;
+  color: #e8ece8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mode-button[aria-pressed="true"] {
+  border-color: currentColor;
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.mode-button.safe {
+  color: var(--green);
+}
+
+.mode-button.hazard {
+  color: var(--yellow);
+}
+
+.mode-button.danger {
+  color: var(--red);
+}
+
+.mode-button.finish {
+  color: #fff;
+}
+
+@media (max-width: 760px) {
+  .control-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
