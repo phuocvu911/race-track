@@ -39,7 +39,6 @@ function renderRaceControl() {
 
   app.innerHTML = layout(`<div class="page-heading">
     <div><p class="eyebrow">Safety official</p><h1>Race <span class="accent">control</span></h1></div>
-    <span class="badge mode-${esc(raceState?.mode ?? "danger")}">${isLive ? esc(active.status) : "standby"}</span>
   </div>
   <div class="grid grid-two">
     <section class="panel">

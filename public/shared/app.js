@@ -87,10 +87,6 @@ export function layout(content) {
         <span class="brand-mark">B</span>
         <span>BEACHSIDE RACETRACK</span>
       </a>
-      <div class="topbar-right">
-        <span class="badge mode-${esc(raceState?.mode ?? "danger")}">${esc(raceState?.mode ?? "offline")}</span>
-        ${display ? '<button class="button ghost" data-action="fullscreen">⛶ &nbsp; Full screen</button>' : ""}
-      </div>
     </header>
     <main class="page">${content}</main>
     ${notice ? `<div class="notice ${noticeIsError ? "error" : ""}" role="status">${esc(notice)}</div>` : ""}
