@@ -79,26 +79,14 @@ export function isPublic() {
   return !employeeRoles[screen]
 }
 
-export function linksMarkup(links) {
-  return links
-    .map(
-      ([path, label]) =>
-        `<a href="/${path}" class="${path === screen ? "active" : ""}">${label}</a>`,
-    )
-    .join("")
-}
-
 export function layout(content) {
   const display = isPublic()
   return `<div class="${display ? "display-shell" : "shell"}">
     <header class="topbar">
       <a class="brand" href="/">
         <span class="brand-mark">B</span>
-        <span>BEACHSIDE<small>RACE CIRCUIT / LIVE OPS</small></span>
+        <span>BEACHSIDE RACETRACK</span>
       </a>
-      <nav class="nav-links" aria-label="Race screens">
-        ${linksMarkup(display ? publicLinks : employeeLinks)}
-      </nav>
       <div class="topbar-right">
         <span class="badge mode-${esc(raceState?.mode ?? "danger")}">${esc(raceState?.mode ?? "offline")}</span>
         ${display ? '<button class="button ghost" data-action="fullscreen">⛶ &nbsp; Full screen</button>' : ""}
