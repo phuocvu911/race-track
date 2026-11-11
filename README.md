@@ -64,3 +64,17 @@ race-track/
       script.js
       ....
 ```
+
+## Role and command event for socket 
+
+| Role             | Command event              | Purpose                               |
+| ---------------- | -------------------------- | ------------------------------------- |
+| Front desk       | `frontdesk:create-session` | Queue a race session                  |
+| Front desk       | `frontdesk:save-driver`    | Add or edit a driver and assigned car |
+| Front desk       | `frontdesk:delete-driver`  | Remove a driver                       |
+| Front desk       | `frontdesk:delete-session` | Remove an upcoming session            |
+| Race control     | `safety:start-race`        | Start the next grid and race clock    |
+| Race control     | `safety:set-mode`          | Set Safe, Hazard, or Danger           |
+| Race control     | `safety:finish-race`       | Finish early                          |
+| Race control     | `safety:end-race`          | End after Finish when cars return     |
+| Lap-line tracker | `observer:record-lap`      | Record a car crossing                 |
