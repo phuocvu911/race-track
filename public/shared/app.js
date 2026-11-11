@@ -48,6 +48,7 @@ export function getApp() {
   return app
 }
 
+//prevent HTML injection since I render the components by js
 export const esc = (value) =>
   String(value ?? "").replace(/[&<>"']/g, (character) => {
     const entities = {
@@ -189,7 +190,7 @@ export function showNotice(message, error = false) {
       notice = ""
       render()
     }
-  }, 3000)
+  }, 5000)
 }
 
 function render() {
@@ -213,18 +214,8 @@ function updateCountdowns() {
   }, 250)
 }
 
-export function enterFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen?.().catch(() => {
-      showNotice("Full-screen mode is not available in this browser.", true)
-    })
-  } else {
-    document.exitFullscreen?.()
-  }
-}
-
-export function registerScreen(renderFn) {
-  screenRenderer = renderFn
+export function registerScreen(screen) {
+  screenRenderer = screen
 }
 
 export function boot() {
@@ -237,12 +228,6 @@ export function boot() {
       form.querySelector("button[type=submit]").disabled = true
       startConnection(String(key ?? ""))
     }
-  })
-
-  app.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-action]")
-    if (!button) return
-    if (button.dataset.action === "fullscreen") enterFullscreen()
   })
 
   if (employeeRoles[screen]) authScreen()

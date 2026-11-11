@@ -14,7 +14,6 @@ const publicDirectory = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
   "public",
 )
-console.log(publicDirectory)
 
 //require all 3 keys
 const requiredKeys = {
