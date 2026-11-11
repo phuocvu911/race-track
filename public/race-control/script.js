@@ -38,7 +38,7 @@ function renderRaceControl() {
     : '<div class="empty-state">No drivers in this race card.</div>'
 
   app.innerHTML = layout(`<div class="page-heading">
-    <div><p class="eyebrow">Race operations / Safety official</p><h1>Race <span class="accent">control</span></h1><p class="subtitle">Start the grid, signal track conditions, and clear the circuit.</p></div>
+    <div><p class="eyebrow">Safety official</p><h1>Race <span class="accent">control</span></h1></div>
     <span class="badge mode-${esc(raceState?.mode ?? "danger")}">${isLive ? esc(active.status) : "standby"}</span>
   </div>
   <div class="grid grid-two">
@@ -58,8 +58,7 @@ function renderRaceControl() {
         ${canEnd ? '<span class="muted">Confirm all cars are back in the pit lane.</span>' : ""}
       </div>
     </section>
-  </div>
-  <p class="footer-note">Finish is permanent for the current race. Lap-line observers can continue recording crossings until the session is ended.</p>`)
+  </div>`)
 }
 
 registerScreen(renderRaceControl)

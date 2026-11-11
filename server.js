@@ -5,6 +5,8 @@ import { Server } from "socket.io"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { createGETRoutes } from "./src/routes.js"
+import { createSocketHandlers } from "./src/sockets.js"
+import { createStateStore } from "./src/state.js"
 
 const app = express()
 const server = http.createServer(app)
@@ -13,6 +15,10 @@ const PORT = 3000
 const publicDirectory = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
   "public",
+)
+const store = createStateStore(
+  path.join(path.dirname(fileURLToPath(import.meta.url)), "data", "race-state.json"),
+  600000,
 )
 
 //require all 3 keys
@@ -36,6 +42,8 @@ if (missingKeys.length > 0) {
 app.use(express.json())
 app.use(express.static(publicDirectory))
 app.use(createGETRoutes(publicDirectory))
+
+createSocketHandlers(io, store, requiredKeys)
 
 server.listen(PORT, () => {
   console.log(`Server listening on  http://localhost:${PORT}`)
