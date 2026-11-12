@@ -1,34 +1,23 @@
 const employeeRoles = {
-  "front-desk": "receptionist",
-  "race-control": "safety",
-  "lap-line-tracker": "observer",
+  'front-desk': 'receptionist',
+  'race-control': 'safety',
+  'lap-line-tracker': 'observer',
 }
 const pageNames = {
-  "front-desk": "Front desk",
-  "race-control": "Race control",
-  "lap-line-tracker": "Lap-line tracker",
-  "leader-board": "Leader board",
-  "next-race": "Next race",
-  "race-countdown": "Race countdown",
-  "race-flags": "Race flags",
+  'front-desk': 'Front desk',
+  'race-control': 'Race control',
+  'lap-line-tracker': 'Lap-line tracker',
+  'leader-board': 'Leader board',
+  'next-race': 'Next race',
+  'race-countdown': 'Race countdown',
+  'race-flags': 'Race flags',
 }
-const publicLinks = [
-  ["leader-board", "Leaderboard"],
-  ["next-race", "Next race"],
-  ["race-countdown", "Countdown"],
-  ["race-flags", "Race flags"],
-]
-const employeeLinks = [
-  ["front-desk", "Front desk"],
-  ["race-control", "Race control"],
-  ["lap-line-tracker", "Lap tracker"],
-]
 
-const app = document.querySelector("#app")
+const app = document.querySelector('#app')
 const screen = document.body.dataset.screen
 let socket
 let raceState
-let notice = ""
+let notice = ''
 let noticeIsError = false
 let timerInterval
 let screenRenderer = null
@@ -50,29 +39,29 @@ export function getApp() {
 
 //prevent HTML injection since I render the components by js
 export const esc = (value) =>
-  String(value ?? "").replace(/[&<>"']/g, (character) => {
+  String(value ?? '').replace(/[&<>"']/g, (character) => {
     const entities = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;",
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
     }
     return entities[character]
   })
 
 export function formatTime(milliseconds) {
-  if (milliseconds === null || milliseconds === undefined) return "—"
+  if (milliseconds === null || milliseconds === undefined) return '—'
   const totalHundredths = Math.floor(milliseconds / 10)
   const minutes = Math.floor(totalHundredths / 6000)
   const seconds = Math.floor((totalHundredths % 6000) / 100)
   const hundredths = totalHundredths % 100
-  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${String(hundredths).padStart(2, "0")}`
+  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(hundredths).padStart(2, '0')}`
 }
 
 export function formatCountdown(milliseconds) {
   const seconds = Math.ceil(Math.max(0, milliseconds) / 1000)
-  return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`
+  return `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`
 }
 
 export function isPublic() {
@@ -81,7 +70,7 @@ export function isPublic() {
 
 export function layout(content) {
   const display = isPublic()
-  return `<div class="${display ? "display-shell" : "shell"}">
+  return `<div class="${display ? 'display-shell' : 'shell'}">
     <header class="topbar">
       <a class="brand" href="/">
         <span class="brand-mark">B</span>
@@ -89,11 +78,11 @@ export function layout(content) {
       </a>
     </header>
     <main class="page">${content}</main>
-    ${notice ? `<div class="notice ${noticeIsError ? "error" : ""}" role="status">${esc(notice)}</div>` : ""}
+    ${notice ? `<div class="notice ${noticeIsError ? 'error' : ''}" role="status">${esc(notice)}</div>` : ''}
   </div>`
 }
 
-export function authScreen(error = "") {
+export function authScreen(error = '') {
   app.innerHTML = `<section class="auth-screen">
     <div class="auth-card">
       <div class="brand">
@@ -114,28 +103,28 @@ export function authScreen(error = "") {
   </section>`
 }
 
-export function startConnection(accessKey = "") {
+export function startConnection(accessKey = '') {
   socket = connectRaceSocket(
-    employeeRoles[screen] ? screen : "public",
+    employeeRoles[screen] ? screen : 'public',
     accessKey,
   )
-  socket.on("race:state", (nextState) => {
+  socket.on('race:state', (nextState) => {
     raceState = nextState
     render()
   })
-  socket.on("connect", () => {
+  socket.on('connect', () => {
     if (employeeRoles[screen]) {
       raceState = raceState ?? null
       render()
     }
   })
-  socket.on("connect_error", (error) => {
+  socket.on('connect_error', (error) => {
     if (employeeRoles[screen]) {
       socket?.disconnect()
       socket = null
       authScreen(
         error.message ||
-          "Unable to connect. Check the access key and try again.",
+          'Unable to connect. Check the access key and try again.',
       )
     } else {
       app.innerHTML = `<div class="shell page"><h1>Connection lost</h1><p class="subtitle">${esc(error.message)}</p></div>`
@@ -146,20 +135,20 @@ export function startConnection(accessKey = "") {
 export function emit(event, payload = {}) {
   return new Promise((resolve) => {
     if (!socket?.connected) {
-      showNotice("Not connected. Re-enter your access key to continue.", true)
+      showNotice('Not connected. Re-enter your access key to continue.', true)
       resolve(false)
       return
     }
     socket.emit(event, payload, (response) => {
       if (!response?.ok) {
         showNotice(
-          response?.error ?? "The request could not be completed.",
+          response?.error ?? 'The request could not be completed.',
           true,
         )
         resolve(false)
         return
       }
-      showNotice("Updated successfully.")
+      showNotice('Updated successfully.')
       resolve(true)
     })
   })
@@ -171,7 +160,7 @@ export function showNotice(message, error = false) {
   render()
   window.setTimeout(() => {
     if (notice === message) {
-      notice = ""
+      notice = ''
       render()
     }
   }, 5000)
@@ -193,7 +182,7 @@ function updateCountdowns() {
   const remaining = raceState?.remainingMs ?? 0
   const expiryAt = Date.now() + remaining
   timerInterval = window.setInterval(() => {
-    const node = document.querySelector("[data-countdown]")
+    const node = document.querySelector('[data-countdown]')
     if (node) node.textContent = formatCountdown(expiryAt - Date.now())
   }, 250)
 }
@@ -203,14 +192,14 @@ export function registerScreen(screen) {
 }
 
 export function boot() {
-  app.addEventListener("submit", (event) => {
+  app.addEventListener('submit', (event) => {
     const form = event.target
     if (!(form instanceof HTMLFormElement)) return
-    if (form.id === "auth-form") {
+    if (form.id === 'auth-form') {
       event.preventDefault()
-      const key = new FormData(form).get("accessKey")
-      form.querySelector("button[type=submit]").disabled = true
-      startConnection(String(key ?? ""))
+      const key = new FormData(form).get('accessKey')
+      form.querySelector('button[type=submit]').disabled = true
+      startConnection(String(key ?? ''))
     }
   })
 

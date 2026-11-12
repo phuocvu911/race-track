@@ -1,8 +1,8 @@
-import fs from "node:fs"
-import path from "node:path"
-import { randomUUID } from "node:crypto"
+import { randomUUID } from 'node:crypto'
+import fs from 'node:fs'
+import path from 'node:path'
 
-const validModes = new Set(["safe", "hazard", "danger", "finished"])
+const validModes = new Set(['safe', 'hazard', 'danger', 'finished'])
 
 //defaultt setup for the race
 function freshState(raceDurationMs) {
@@ -10,7 +10,7 @@ function freshState(raceDurationMs) {
     sessions: [],
     activeSessionId: null,
     displaySessionId: null,
-    mode: "danger",
+    mode: 'danger',
     raceDurationMs,
   }
 }
@@ -19,9 +19,9 @@ function parseState(filePath, raceDurationMs) {
   if (!fs.existsSync(filePath)) return freshState(raceDurationMs)
 
   try {
-    const saved = JSON.parse(fs.readFileSync(filePath, "utf8"))
+    const saved = JSON.parse(fs.readFileSync(filePath, 'utf8'))
     if (!Array.isArray(saved.sessions) || !validModes.has(saved.mode)) {
-      throw new Error("Saved race state has an invalid shape.")
+      throw new Error('Saved race state has an invalid shape.')
     }
     return {
       ...freshState(raceDurationMs),
@@ -50,7 +50,7 @@ export function createStateStore(filePath, raceDurationMs) {
 
   function getUpcomingSession() {
     return (
-      state.sessions.find((session) => session.status === "upcoming") ?? null
+      state.sessions.find((session) => session.status === 'upcoming') ?? null
     )
   }
 
@@ -73,7 +73,7 @@ export function createStateStore(filePath, raceDurationMs) {
     const displaySession = getDisplaySession()
     const sessionForBoard = activeSession ?? displaySession
     const sessionEnded = state.sessions.some(
-      (session) => session.status === "ended",
+      (session) => session.status === 'ended',
     )
 
     return {
@@ -84,10 +84,10 @@ export function createStateStore(filePath, raceDurationMs) {
       upcomingSession: getUpcomingSession(),
       sessionEnded,
       sessions: state.sessions.filter(
-        (session) => session.status === "upcoming",
+        (session) => session.status === 'upcoming',
       ),
       remainingMs:
-        activeSession?.status === "active" && state.mode !== "finished"
+        activeSession?.status === 'active' && state.mode !== 'finished'
           ? Math.max(
               0,
               activeSession.startedAt + activeSession.durationMs - Date.now(),
@@ -100,8 +100,8 @@ export function createStateStore(filePath, raceDurationMs) {
     const sequence = state.sessions.length + 1
     const session = {
       id: randomUUID(),
-      label: `Race session ${String(sequence).padStart(2, "0")}`,
-      status: "upcoming",
+      label: `Race session ${String(sequence).padStart(2, '0')}`,
+      status: 'upcoming',
       drivers: [],
       createdAt: Date.now(),
     }
@@ -112,35 +112,35 @@ export function createStateStore(filePath, raceDurationMs) {
 
   function deleteSession(sessionId) {
     const index = state.sessions.findIndex(
-      (session) => session.id === sessionId && session.status === "upcoming",
+      (session) => session.id === sessionId && session.status === 'upcoming',
     )
-    if (index < 0) throw new Error("Upcoming race session not found.")
+    if (index < 0) throw new Error('Upcoming race session not found.')
     state.sessions.splice(index, 1)
     save()
   }
 
   function upsertDriver({ sessionId, driverId, name, carNumber }) {
     const session = state.sessions.find(
-      (item) => item.id === sessionId && item.status === "upcoming",
+      (item) => item.id === sessionId && item.status === 'upcoming',
     )
-    if (!session) throw new Error("Upcoming race session not found.")
+    if (!session) throw new Error('Upcoming race session not found.')
 
-    const normalizedName = typeof name === "string" ? name.trim() : ""
+    const normalizedName = typeof name === 'string' ? name.trim() : ''
     const numericCar = Number(carNumber)
     if (!normalizedName || normalizedName.length > 60) {
-      throw new Error("Enter a driver name between 1 and 60 characters.")
+      throw new Error('Enter a driver name between 1 and 60 characters.')
     }
     if (!Number.isInteger(numericCar) || numericCar < 1 || numericCar > 8) {
-      throw new Error("Car numbers must be whole numbers from 1 to 8.")
+      throw new Error('Car numbers must be whole numbers from 1 to 8.')
     }
 
     const existing = driverId
       ? session.drivers.find((driver) => driver.id === driverId)
       : null
     if (driverId && !existing)
-      throw new Error("Driver not found in this race session.")
+      throw new Error('Driver not found in this race session.')
     if (!existing && session.drivers.length >= 8) {
-      throw new Error("A race session can have no more than 8 drivers.")
+      throw new Error('A race session can have no more than 8 drivers.')
     }
     if (
       session.drivers.some(
@@ -149,7 +149,7 @@ export function createStateStore(filePath, raceDurationMs) {
           driver.name.toLowerCase() === normalizedName.toLowerCase(),
       )
     ) {
-      throw new Error("Driver names must be unique within a race session.")
+      throw new Error('Driver names must be unique within a race session.')
     }
     if (
       session.drivers.some(
@@ -157,7 +157,7 @@ export function createStateStore(filePath, raceDurationMs) {
       )
     ) {
       throw new Error(
-        "Each driver in a race session must have a different car.",
+        'Each driver in a race session must have a different car.',
       )
     }
 
@@ -179,26 +179,26 @@ export function createStateStore(filePath, raceDurationMs) {
 
   function deleteDriver({ sessionId, driverId }) {
     const session = state.sessions.find(
-      (item) => item.id === sessionId && item.status === "upcoming",
+      (item) => item.id === sessionId && item.status === 'upcoming',
     )
-    if (!session) throw new Error("Upcoming race session not found.")
+    if (!session) throw new Error('Upcoming race session not found.')
     const index = session.drivers.findIndex((driver) => driver.id === driverId)
-    if (index < 0) throw new Error("Driver not found in this race session.")
+    if (index < 0) throw new Error('Driver not found in this race session.')
     session.drivers.splice(index, 1)
     save()
   }
 
   function startRace() {
-    if (getActiveSession()) throw new Error("A race is already in progress.")
+    if (getActiveSession()) throw new Error('A race is already in progress.')
     const session = getUpcomingSession()
-    if (!session) throw new Error("Add a race session before starting a race.")
+    if (!session) throw new Error('Add a race session before starting a race.')
     if (session.drivers.length === 0)
-      throw new Error("Add at least one driver before starting.")
+      throw new Error('Add at least one driver before starting.')
 
     state.sessions = state.sessions.filter(
-      (item) => item.status === "upcoming" || item.id === session.id,
+      (item) => item.status === 'upcoming' || item.id === session.id,
     )
-    session.status = "active"
+    session.status = 'active'
     session.startedAt = Date.now()
     session.durationMs = raceDurationMs
     session.drivers.forEach((driver) => {
@@ -208,17 +208,17 @@ export function createStateStore(filePath, raceDurationMs) {
     })
     state.activeSessionId = session.id
     state.displaySessionId = session.id
-    state.mode = "safe"
+    state.mode = 'safe'
     save()
     return session.id
   }
 
   function setMode(mode) {
-    if (!validModes.has(mode) || mode === "finished") {
-      throw new Error("Select a valid race mode.")
+    if (!validModes.has(mode) || mode === 'finished') {
+      throw new Error('Select a valid race mode.')
     }
-    if (!getActiveSession() || state.mode === "finished") {
-      throw new Error("Race modes can only be changed during an active race.")
+    if (!getActiveSession() || state.mode === 'finished') {
+      throw new Error('Race modes can only be changed during an active race.')
     }
     state.mode = mode
     save()
@@ -226,9 +226,9 @@ export function createStateStore(filePath, raceDurationMs) {
 
   function finishRace() {
     const session = getActiveSession()
-    if (!session || state.mode === "finished") return false
-    state.mode = "finished"
-    session.status = "finished"
+    if (!session || state.mode === 'finished') return false
+    state.mode = 'finished'
+    session.status = 'finished'
     session.finishedAt = Date.now()
     save()
     return true
@@ -236,25 +236,25 @@ export function createStateStore(filePath, raceDurationMs) {
 
   function endRace() {
     const session = getActiveSession()
-    if (!session || state.mode !== "finished") {
-      throw new Error("Finish the race before ending the session.")
+    if (!session || state.mode !== 'finished') {
+      throw new Error('Finish the race before ending the session.')
     }
-    session.status = "ended"
+    session.status = 'ended'
     session.endedAt = Date.now()
     state.activeSessionId = null
-    state.mode = "danger"
+    state.mode = 'danger'
     save()
   }
 
   function recordLap(carNumber) {
     const session = getActiveSession()
-    if (!session || !["active", "finished"].includes(session.status)) {
-      throw new Error("There is no race session accepting lap times.")
+    if (!session || !['active', 'finished'].includes(session.status)) {
+      throw new Error('There is no race session accepting lap times.')
     }
     const driver = session.drivers.find(
       (item) => item.carNumber === Number(carNumber),
     )
-    if (!driver) throw new Error("Car not found in the current race session.")
+    if (!driver) throw new Error('Car not found in the current race session.')
 
     const now = Date.now()
     driver.laps += 1
@@ -270,7 +270,7 @@ export function createStateStore(filePath, raceDurationMs) {
 
   function finishIfExpired() {
     const session = getActiveSession()
-    if (!session || session.status !== "active" || state.mode === "finished")
+    if (!session || session.status !== 'active' || state.mode === 'finished')
       return false
     if (Date.now() < session.startedAt + session.durationMs) return false
     return finishRace()
@@ -290,6 +290,5 @@ export function createStateStore(filePath, raceDurationMs) {
     recordLap,
     finishIfExpired,
     getActiveSession,
-    close() {},
   }
 }

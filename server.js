@@ -1,23 +1,26 @@
-import express from "express"
-import "dotenv/config"
-import http from "http"
-import { Server } from "socket.io"
-import path from "node:path"
-import { fileURLToPath } from "node:url"
-import { createGETRoutes } from "./src/routes.js"
-import { createSocketHandlers } from "./src/sockets.js"
-import { createStateStore } from "./src/state.js"
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import express from 'express'
+import http from 'http'
+import { Server } from 'socket.io'
+import { createGETRoutes } from './src/routes.js'
+import { createSocketHandlers } from './src/sockets.js'
+import { createStateStore } from './src/state.js'
 
 const app = express()
 const server = http.createServer(app)
 const io = new Server(server)
-const PORT = 3000
+const PORT = process.env.PORT
 const publicDirectory = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
-  "public",
+  'public',
 )
 const store = createStateStore(
-  path.join(path.dirname(fileURLToPath(import.meta.url)), "data", "race-state.json"),
+  path.join(
+    path.dirname(fileURLToPath(import.meta.url)),
+    'data',
+    'race-state.json',
+  ),
   600000,
 )
 
@@ -29,12 +32,12 @@ const requiredKeys = {
 }
 const missingKeys = Object.entries(requiredKeys)
   .filter(([, value]) => !value?.trim())
-  .map(([role]) => role.toUpperCase() + "_KEY")
+  .map(([role]) => role.toUpperCase() + '_KEY')
 
 if (missingKeys.length > 0) {
   console.error(
-    `Missing required access keys: ${missingKeys.join(", ")}\n` +
-      "Set all three environment variables before starting the server. See README.md.",
+    `Missing required access keys: ${missingKeys.join(', ')}\n` +
+      'Set all three environment variables before starting the server. See README.md.',
   )
   process.exit(1)
 }
