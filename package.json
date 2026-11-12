@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=22.9"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "node --env-file-if-exists=.env server.js",
+    "dev": "TIMER_MINUTES=1 node --env-file-if-exists=.env --watch server.js",
     "format": "biome format --write .",
     "lint": "biome lint .",
     "check": "biome check --write ."
