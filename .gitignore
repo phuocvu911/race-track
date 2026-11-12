@@ -1,5 +1,43 @@
+# Dependencies
 node_modules/
+
+# Build output
+dist/
+
+# Environment variables
 .env
 .env.*
 !.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Node diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Test coverage
+coverage/
+
+# Caches
+.npm/
+*.tsbuildinfo
+
+# Output of 'npm pack'
+*.tgz
+
+# Vite
+vite.config.*.timestamp-*
+.vite/
+
+# Editors (keep shared VS Code workspace settings)
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# System files
 .DS_Store
+
+# Development data
+/data/
