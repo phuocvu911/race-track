@@ -104,8 +104,10 @@
     }
   },
   "html": {
+    "experimentalFullSupportEnabled": true,
     "formatter": {
-      "indentScriptAndStyle": false,
+      "enabled": true,
+      "indentScriptAndStyle": true,
       "selfCloseVoidElements": "always"
     }
   },
