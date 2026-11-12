@@ -31,6 +31,9 @@ coverage/
 vite.config.*.timestamp-*
 .vite/
 
+# Personal git hook overrides
+lefthook-local.yml
+
 # Editors (keep shared VS Code workspace settings)
 .vscode/*
 !.vscode/settings.json
