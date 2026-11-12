@@ -15,13 +15,14 @@ const publicDirectory = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
   'public',
 )
+const raceDurationMs = process.env.TIMER_MINUTES === '1' ? 60_000 : 600_000
 const store = createStateStore(
   path.join(
     path.dirname(fileURLToPath(import.meta.url)),
     'data',
     'race-state.json',
   ),
-  600000,
+  raceDurationMs,
 )
 
 //require all 3 keys
