@@ -13,6 +13,7 @@ const pageNames = {
   'race-flags': 'Race flags',
 }
 
+const TICK_MS = 250
 const app = document.querySelector('#app')
 const screen = document.body.dataset.screen
 let socket
@@ -20,6 +21,7 @@ let raceState
 let notice = ''
 let noticeIsError = false
 let timerInterval
+let countdownDeadlineAt
 let screenRenderer = null
 
 function connectRaceSocket(role, accessKey) {
@@ -110,6 +112,7 @@ export function startConnection(accessKey = '') {
   )
   socket.on('race:state', (nextState) => {
     raceState = nextState
+    countdownDeadlineAt = Date.now() + (nextState.remainingMs ?? 0)
     render()
   })
   socket.on('connect', () => {
@@ -177,14 +180,20 @@ function render() {
   updateCountdowns()
 }
 
+function renderCountdown() {
+  const remaining = (countdownDeadlineAt ?? Date.now()) - Date.now()
+  const text = formatCountdown(remaining)
+
+  document.querySelectorAll('[data-countdown]').forEach((node) => {
+    node.textContent = text
+  })
+}
+
+// show the timer
 function updateCountdowns() {
-  if (timerInterval) window.clearInterval(timerInterval)
-  const remaining = raceState?.remainingMs ?? 0
-  const expiryAt = Date.now() + remaining
-  timerInterval = window.setInterval(() => {
-    const node = document.querySelector('[data-countdown]')
-    if (node) node.textContent = formatCountdown(expiryAt - Date.now())
-  }, 250)
+  clearInterval(timerInterval)
+  renderCountdown()
+  timerInterval = setInterval(renderCountdown, TICK_MS)
 }
 
 export function registerScreen(screen) {
