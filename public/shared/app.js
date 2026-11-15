@@ -201,6 +201,7 @@ export function registerScreen(screen) {
 }
 
 export function boot() {
+  //resolve auth screen
   app.addEventListener('submit', (event) => {
     const form = event.target
     if (!(form instanceof HTMLFormElement)) return
