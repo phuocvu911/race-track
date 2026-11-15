@@ -166,7 +166,7 @@ export function showNotice(message, error = false) {
       notice = ''
       render()
     }
-  }, 5000)
+  }, 700)
 }
 
 function render() {
