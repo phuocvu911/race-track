@@ -4,22 +4,26 @@
   inset: 0;
   display: grid;
   place-items: center;
-  background: #c62828;
 }
 
-.flag-display .danger {
-  background: var(--red);
+.flag-display.danger {
+  background: red;
 }
 
-.flag-display .hazard {
-  background: var(--yellow);
+.flag-display.hazard {
+  background: yellow;
 }
 
-.flag-display .safe {
-  background: var(--green);
+.flag-display.safe {
+  background: green;
 }
 
-.flag-display .finish {
-  background-image: conic-gradient(#ccc 25%, #fff 0 50%, #ccc 0 75%, #fff 0);
+.flag-display.finish {
+  background-image: conic-gradient(
+    black 25%,
+    white 0 50%,
+    black 0 75%,
+    white 0
+  );
   background-size: 40px 40px;
 }
