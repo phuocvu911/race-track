@@ -216,3 +216,13 @@ export function boot() {
   if (employeeRoles[screen]) authScreen()
   else startConnection()
 }
+
+export function enterFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen?.().catch(() => {
+      showNotice('Full-screen mode is not available in this browser.', true)
+    })
+  } else {
+    document.exitFullscreen?.()
+  }
+}

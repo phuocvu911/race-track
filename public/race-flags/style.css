@@ -1,0 +1,25 @@
+@import url("/shared/base.css");
+.flag-display {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #c62828;
+}
+
+.flag-display .danger {
+  background: var(--red);
+}
+
+.flag-display .hazard {
+  background: var(--yellow);
+}
+
+.flag-display .safe {
+  background: var(--green);
+}
+
+.flag-display .finish {
+  background-image: conic-gradient(#ccc 25%, #fff 0 50%, #ccc 0 75%, #fff 0);
+  background-size: 40px 40px;
+}
