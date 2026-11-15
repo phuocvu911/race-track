@@ -17,3 +17,9 @@ Been doing race-track for a while then AI log requirement comes into force.
 - **Asked:** give me home boilerplate with 7 buttons to according endpoints
 - **Kept:** buttons, href, title
 - **Changed or rejected:** delete the verbose explanation that AI generated
+
+## 3. learn about future value in js
+
+- **Asked:** async/await vs. new Promise()
+- **Kept:** latter one since it simple and make sense for this project
+- **Changed or rejected:** ...
