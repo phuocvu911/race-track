@@ -7,10 +7,6 @@ const pageNames = {
   'front-desk': 'Front desk',
   'race-control': 'Race control',
   'lap-line-tracker': 'Lap-line tracker',
-  'leader-board': 'Leader board',
-  'next-race': 'Next race',
-  'race-countdown': 'Race countdown',
-  'race-flags': 'Race flags',
 }
 
 const TICK_MS = 250
