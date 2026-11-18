@@ -7,10 +7,6 @@ const pageNames = {
   'front-desk': 'Front desk',
   'race-control': 'Race control',
   'lap-line-tracker': 'Lap-line tracker',
-  'leader-board': 'Leader board',
-  'next-race': 'Next race',
-  'race-countdown': 'Race countdown',
-  'race-flags': 'Race flags',
 }
 
 const TICK_MS = 250
@@ -215,4 +211,14 @@ export function boot() {
 
   if (employeeRoles[screen]) authScreen()
   else startConnection()
+}
+
+export function enterFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen?.().catch(() => {
+      showNotice('Full-screen mode is not available in this browser.', true)
+    })
+  } else {
+    document.exitFullscreen?.()
+  }
 }

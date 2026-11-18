@@ -1,0 +1,34 @@
+@import url("/shared/base.css");
+.flag-display {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.flag-display.danger {
+  background: red;
+}
+
+.flag-display.hazard {
+  background: yellow;
+}
+
+.flag-display.safe {
+  background: green;
+}
+
+.flag-display.finish {
+  background-image: conic-gradient(
+    black 25%,
+    white 0 50%,
+    black 0 75%,
+    white 0
+  );
+  background-size: 40px 40px;
+}
+
+:fullscreen .fullscreen-button {
+  opacity: 0;
+  pointer-events: none;
+}
