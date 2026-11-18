@@ -1,0 +1,54 @@
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import express from 'express'
+import http from 'http'
+import { Server } from 'socket.io'
+import { createGETRoutes } from './src/routes.js'
+import { createSocketHandlers } from './src/sockets.js'
+import { createStateStore } from './src/state.js'
+
+const app = express()
+const server = http.createServer(app)
+const io = new Server(server)
+const PORT = process.env.PORT ?? 3000
+const publicDirectory = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  'public',
+)
+const raceDurationMs = process.env.TIMER_MINUTES === '1' ? 60_000 : 600_000
+const store = createStateStore(
+  path.join(
+    path.dirname(fileURLToPath(import.meta.url)),
+    'data',
+    'race-state.json',
+  ),
+  raceDurationMs,
+)
+
+//require all 3 keys
+const requiredKeys = {
+  receptionist: process.env.RECEPTIONIST_KEY,
+  observer: process.env.OBSERVER_KEY,
+  safety: process.env.SAFETY_KEY,
+}
+const missingKeys = Object.entries(requiredKeys)
+  .filter(([, value]) => !value?.trim())
+  .map(([role]) => role.toUpperCase() + '_KEY')
+
+if (missingKeys.length > 0) {
+  console.error(
+    `Missing required access keys: ${missingKeys.join(', ')}\n` +
+      'Set all three environment variables before starting the server. See README.md.',
+  )
+  process.exit(1)
+}
+
+app.use(express.json())
+app.use(express.static(publicDirectory))
+app.use(createGETRoutes(publicDirectory))
+
+createSocketHandlers(io, store, requiredKeys)
+
+server.listen(PORT, () => {
+  console.log(`Server listening on  http://localhost:${PORT}`)
+})
