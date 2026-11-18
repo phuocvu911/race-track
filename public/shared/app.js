@@ -166,7 +166,7 @@ export function showNotice(message, error = false) {
       notice = ''
       render()
     }
-  }, 5000)
+  }, 700)
 }
 
 function render() {
@@ -201,6 +201,7 @@ export function registerScreen(screen) {
 }
 
 export function boot() {
+  //resolve auth screen
   app.addEventListener('submit', (event) => {
     const form = event.target
     if (!(form instanceof HTMLFormElement)) return
