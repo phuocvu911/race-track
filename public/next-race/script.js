@@ -11,7 +11,7 @@ function renderNextRace() {
     <div><h1>Next <span class="accent">race</span></h1><p class="subtitle">${session ? esc(session.label) : 'The next grid will appear here.'}</p></div>
     ${session ? `<span class="badge">${drivers.length} drivers</span>` : ''}
   </div>
-  ${raceState?.sessionEnded && session ? '<div class="paddock-call">Drivers for the next race · Please proceed to the paddock</div>' : ''}
+  ${raceState?.sessionEnded && session ? '<div class="paddock-call">Drivers for the next race, please proceed to the paddock.</div>' : ''}
   ${
     drivers.length
       ? `<div class="next-driver-list">${drivers
