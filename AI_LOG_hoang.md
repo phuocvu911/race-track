@@ -23,3 +23,9 @@ Been doing race-track for a while then AI log requirement comes into force.
 - **Asked:** async/await vs. new Promise()
 - **Kept:** latter one since it simple and make sense for this project
 - **Changed or rejected:** ...
+
+## 4. CSS trick
+
+- **Asked:** how to make a button disappeared when in fullscreen
+- **Kept:** keep the trick
+- **Changed or rejected:** ...
