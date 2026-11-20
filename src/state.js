@@ -248,7 +248,7 @@ export function createStateStore(filePath, raceDurationMs) {
 
   function recordLap(carNumber) {
     const session = getActiveSession()
-    if (!session || !['active', 'finished'].includes(session.status)) {
+    if (!session || session.status !== 'active') {
       throw new Error('There is no race session accepting lap times.')
     }
     const driver = session.drivers.find(
