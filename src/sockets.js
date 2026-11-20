@@ -45,14 +45,14 @@ export function createSocketHandlers(io, store, accessKeys) {
   function finishTimer() {
     const session = store.getActiveSession()
     if (!session || session.status !== 'active') return
-    const delay = Math.max(
+    const remainingMs = Math.max(
       0,
       session.startedAt + session.durationMs - Date.now(),
     )
     setTimeout(() => {
       if (store.finishIfExpired()) broadcast()
       else if (store.getActiveSession()?.id === session.id) finishTimer()
-    }, delay + 5)
+    }, remainingMs + 5)
   }
   //connects a client role and event name to an action, store data(3) and emit event(4)
   function bind(role, event, action, afterAction = broadcast) {
@@ -94,5 +94,6 @@ export function createSocketHandlers(io, store, accessKeys) {
   )
 
   if (store.finishIfExpired()) broadcast()
+  //used for when restaring server mid-race, start the finish timer
   finishTimer()
 }
