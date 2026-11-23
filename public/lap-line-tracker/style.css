@@ -1,0 +1,65 @@
+.lap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.lap-button {
+  display: grid;
+  min-height: 195px;
+  align-content: center;
+  justify-items: center;
+  gap: 9px;
+  border: 2px solid #40504d;
+  border-radius: 12px;
+  background: linear-gradient(150deg, #202c29, #151d1d);
+  color: #f8f9f4;
+  touch-action: manipulation;
+}
+
+.lap-button:not(:disabled):active {
+  border-color: var(--lime);
+  background: #2d3821;
+  transform: scale(0.98);
+}
+
+.lap-number {
+  color: var(--lime);
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: clamp(60px, 9vw, 110px);
+  font-weight: 900;
+  line-height: 0.9;
+}
+
+.lap-driver {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.lap-count {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 760px) {
+  .lap-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lap-button {
+    min-height: 160px;
+  }
+}
+
+@media (max-width: 420px) {
+  .lap-grid {
+    gap: 8px;
+  }
+
+  .lap-button {
+    min-height: 140px;
+  }
+}

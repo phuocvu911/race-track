@@ -1,30 +1,34 @@
-#TASK SPLIT
+# Beachside Racetrack
 
-## tech
+A real-time race operations MVP built with Node.js, Express, Socket.IO, and browser-native JavaScript. Race data is saved locally in `data/race-state.json`(or can be SQLite but json file is good enough to persist data, would simplify the codebase alot :)).
 
-    express for routing (since it a node package)
-    socket IO
+## Requirements
 
-## 1
+- Node.js 20 or newer
+- npm
+- The three staff access keys below
 
-The employee interfaces are for managing race operations. These screens require an admin password to unlock. These are:
+## Start the server
 
-Interface Persona Route
-Front Desk Receptionist /front-desk
-Race Control Safety Official /race-control
-Lap-line Tracker Lap-line Observer /lap-line-tracker
+Install dependencies once:
 
-plus persist data and allow receptionist to select cars
+```sh
+npm install
+```
 
-## 2
+Create `.env` file, set a separate access key for each employee interface, this will be used to open protected enpoints for the staff only, then start the server:
 
-Interface Persona Route
-Leader Board Guest leader-board
-Next Race Race Driver next-race
-Race Countdown Race Driver race-countdown
-Race Flag Race Driver race-flags
+```sh
+RECEPTIONIST_KEY='Hive'
+OBSERVER_KEY='Helsinki'
+SAFETY_KEY='Hiver9'
+```
 
-Plus 2 bonus that can be used by any persona:
+```
+npm start
+```
+
+The server listens on port `3000`
 
 ## layout
 
@@ -60,3 +64,17 @@ race-track/
       script.js
       ....
 ```
+
+## Role and command event for socket 
+
+| Role             | Command event              | Purpose                               |
+| ---------------- | -------------------------- | ------------------------------------- |
+| Front desk       | `frontdesk:create-session` | Queue a race session                  |
+| Front desk       | `frontdesk:save-driver`    | Add or edit a driver and assigned car |
+| Front desk       | `frontdesk:delete-driver`  | Remove a driver                       |
+| Front desk       | `frontdesk:delete-session` | Remove an upcoming session            |
+| Race control     | `safety:start-race`        | Start the next grid and race clock    |
+| Race control     | `safety:set-mode`          | Set Safe, Hazard, or Danger           |
+| Race control     | `safety:finish-race`       | Finish early                          |
+| Race control     | `safety:end-race`          | End after Finish when cars return     |
+| Lap-line tracker | `observer:record-lap`      | Record a car crossing                 |
