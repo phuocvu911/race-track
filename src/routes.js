@@ -2,7 +2,7 @@ import path from 'node:path'
 import { Router } from 'express'
 
 const routes = {
-  '/': 'home',
+  '/': '',
   '/front-desk': 'front-desk',
   '/race-control': 'race-control',
   '/lap-line-tracker': 'lap-line-tracker',

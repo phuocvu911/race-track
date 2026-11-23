@@ -11,9 +11,9 @@ const app = express()
 const server = http.createServer(app)
 const io = new Server(server)
 const PORT = process.env.PORT ?? 3000
-const publicDirectory = path.join(
+const clientDirectory = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
-  'public',
+  'dist',
 )
 const raceDurationMs = process.env.TIMER_MINUTES === '1' ? 60_000 : 600_000
 const store = createStateStore(
@@ -44,8 +44,8 @@ if (missingKeys.length > 0) {
 }
 
 app.use(express.json())
-app.use(express.static(publicDirectory))
-app.use(createGETRoutes(publicDirectory))
+app.use(express.static(clientDirectory))
+app.use(createGETRoutes(clientDirectory))
 
 createSocketHandlers(io, store, requiredKeys)
 
