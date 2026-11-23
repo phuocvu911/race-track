@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@utility grid-cols-auto {
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+body {
+  @apply bg-neutral-100 text-neutral-900;
+}
