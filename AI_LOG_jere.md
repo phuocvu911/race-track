@@ -95,3 +95,9 @@
 - **Asked:** whether a lookup for the station names is worth it with only three fixed stations, how to name it, and reviews of the result.
 - **Kept:** `STATION_NAMES: Record<StaffRole, string>` in `lib/stations.ts`, since the lock menu will need to turn roles from storage into names anyway. `StaffGate` and the Header now take only a `role` (the Header's is optional, so Home keeps the brand) and look the name up. The `UPPER_CASE` name follows the project's other module-level constants.
 - **Changed or rejected:** I declared the role once per page (`const role: StaffRole`) and passed it with `{role}` to both components, instead of writing it twice.
+
+## 17. Front desk and lap-line tracker pages
+
+- **Asked:** copy the race control page structure to the front desk and lap-line tracker, add them to `vite.config.js`, with "Receptionist" and "Lap-line Observer" in the placeholder headings.
+- **Kept:** for each, the HTML entry (`client/<page>/index.html`), `main.ts` calling `connect` with its role, the page component with its `const role` inside `StaffGate`, and the build input. AI checked that the build now contains all four pages.
+- **Changed or rejected:** nothing. While testing, AI found that all three keys in my local `.env` were the same, so every station accepted every key; not a code problem, all three keys in my local .env are the same on purpose for convenience; with different keys each station accepts only its own.

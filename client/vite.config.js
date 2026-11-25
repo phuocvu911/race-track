@@ -13,6 +13,11 @@ export default defineConfig({
       input: {
         home: resolve(import.meta.dirname, 'index.html'),
         raceControl: resolve(import.meta.dirname, 'race-control/index.html'),
+        frontDesk: resolve(import.meta.dirname, 'front-desk/index.html'),
+        lapLineTracker: resolve(
+          import.meta.dirname,
+          'lap-line-tracker/index.html',
+        ),
       },
     },
   },
