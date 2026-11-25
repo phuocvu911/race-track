@@ -101,3 +101,15 @@
 - **Asked:** copy the race control page structure to the front desk and lap-line tracker, add them to `vite.config.js`, with "Receptionist" and "Lap-line Observer" in the placeholder headings.
 - **Kept:** for each, the HTML entry (`client/<page>/index.html`), `main.ts` calling `connect` with its role, the page component with its `const role` inside `StaffGate`, and the build input. AI checked that the build now contains all four pages.
 - **Changed or rejected:** nothing. While testing, AI found that all three keys in my local `.env` were the same, so every station accepted every key; not a code problem, all three keys in my local .env are the same on purpose for convenience; with different keys each station accepts only its own.
+
+## 18. Unlock card and the phone keyboard
+
+- **Asked:** make the unlock card dock above the phone keyboard ("centred, docks to keyboard" from the sketches), then fix the page staying scrolled down after the keyboard closes on iOS, and make that scroll smooth.
+- **Kept:** `onblur={() => window.scrollTo({ top: 0, behavior: 'smooth' })}` on the key input, so the header comes back into view when the keyboard closes. I kept it always smooth: it undoes the scroll iOS did itself and moves together with the keyboard, so it isn't extra decorative motion.
+- **Changed or rejected:** rejected AI's docking code (a `visualViewport` module plus a `StaffGate` layout change): testing on my iPhone showed Safari already scrolls the field and button above the keyboard on its own. Also skipped the reduced-motion check AI suggested, for the reason above.
+
+## 19. White status bar area on phones
+
+- **Asked:** make the area around the phone's notch white like the header instead of the grey page background, and add it to every page.
+- **Kept:** `<meta name="theme-color" content="#ffffff" />` in the `<head>` of all four page entries (home and the three stations).
+- **Changed or rejected:** `theme-color` alone didn't work on my iPhone, since newer Safari takes the colour from a fixed or sticky element at the top instead. So the header is now `sticky top-0` (replacing `relative`), which also keeps the race status and the connection bar visible while scrolling. `theme-color` stays for Chrome on Android.

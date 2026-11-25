@@ -102,7 +102,7 @@
 </script>
 
 <header
-  class="relative z-10 flex flex-wrap items-center gap-3 min-h-14 md:min-h-16 py-3 px-6 bg-white border-b border-zinc-200"
+  class="sticky top-0 z-10 flex flex-wrap items-center gap-3 min-h-14 md:min-h-16 py-3 px-6 bg-white border-b border-zinc-200"
 >
   <span class="flex flex-col gap-0.5 min-w-0">
     <span class="text-base font-bold leading-tight whitespace-nowrap">

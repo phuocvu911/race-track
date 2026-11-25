@@ -74,6 +74,7 @@
         enterkeyhint="go"
         placeholder="••••••••"
         oninput={() => (error = false)}
+        onblur={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         aria-invalid={error}
         aria-describedby="key-help"
       />
