@@ -1,8 +1,9 @@
 <script lang="ts">
   import { ArrowLeft, LoaderCircle } from '@lucide/svelte'
-  import { clock } from '../clock.svelte'
+  import { clock } from '../clock.svelte.js'
   import CheckeredFlag from '../icons/CheckeredFlag.svelte'
-  import { race } from '../socket.svelte.js'
+  import { race, type StaffRole } from '../socket.svelte.js'
+  import { STATION_NAMES } from '../stations.js'
   import type { Mode, RaceState } from '../types.js'
   import StatusBar from './StatusBar.svelte'
 
@@ -94,10 +95,10 @@
   }
 
   interface Props {
-    station?: string
+    role?: StaffRole
   }
 
-  let { station }: Props = $props()
+  let { role }: Props = $props()
 </script>
 
 <header
@@ -105,13 +106,13 @@
 >
   <span class="flex flex-col gap-0.5 min-w-0">
     <span class="text-base font-bold leading-tight whitespace-nowrap">
-      {#if station}
+      {#if role}
         <span class="flex items-center gap-1.5">
           <a class="flex items-center gap-1 font-medium text-zinc-600" href="/">
             <ArrowLeft class="size-4" />Home
           </a>
           <span class="text-zinc-300" aria-hidden="true">/</span>
-          <span class="text-zinc-950">{station}</span>
+          <span class="text-zinc-950">{STATION_NAMES[role]}</span>
         </span>
       {:else}
         <span class="tracking-tight">

@@ -83,3 +83,15 @@
 - **Asked:** whether Biome's `noUnassignedVariables` warning on `input` in `UnlockCard.svelte` can be fixed.
 - **Kept:** the explanation that it's a false positive (Biome only reads the `<script>` and doesn't see `bind:this` in the markup assigning it), and the fix `let input = $state<HTMLInputElement>()`, which AI checked Biome accepts.
 - **Changed or rejected:** chose `$state` over an explicit `= undefined`, and didn't use a `biome-ignore` comment.
+
+## 15. `StaffGate` for all staff stations
+
+- **Asked:** whether to copy the unlock block from race control into the other staff pages or make it a component, how `{@render children()}` and the `Snippet` type work, and a review of the result.
+- **Kept:** a `StaffGate` component with `role` and `children` props that shows the station once `race.role` matches and the unlock card otherwise, so the role is written once per page. AI's explanation of snippets (the content between the tags, passed as `children`) and that the frontend can't be hidden, since the server ignores commands from sockets without the key.
+- **Changed or rejected:** AI suggested renaming the card to `UnlockScreen` and moving `<main>` into it; I kept `UnlockCard` as the form and put `<main>` in the gate instead. Skipped lazy-loading the station code.
+
+## 16. Station names in one lookup
+
+- **Asked:** whether a lookup for the station names is worth it with only three fixed stations, how to name it, and reviews of the result.
+- **Kept:** `STATION_NAMES: Record<StaffRole, string>` in `lib/stations.ts`, since the lock menu will need to turn roles from storage into names anyway. `StaffGate` and the Header now take only a `role` (the Header's is optional, so Home keeps the brand) and look the name up. The `UPPER_CASE` name follows the project's other module-level constants.
+- **Changed or rejected:** I declared the role once per page (`const role: StaffRole`) and passed it with `{role}` to both components, instead of writing it twice.
