@@ -18,7 +18,7 @@
   background: green;
 }
 
-.flag-display.finish {
+.flag-display.finished {
   background-image: conic-gradient(
     black 25%,
     white 0 50%,
