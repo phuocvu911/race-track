@@ -12,6 +12,7 @@ export default defineConfig({
     rolldownOptions: {
       input: {
         home: resolve(import.meta.dirname, 'index.html'),
+        raceControl: resolve(import.meta.dirname, 'race-control/index.html'),
       },
     },
   },

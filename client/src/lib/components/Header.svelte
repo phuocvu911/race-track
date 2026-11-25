@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { LoaderCircle } from '@lucide/svelte'
+  import { ArrowLeft, LoaderCircle } from '@lucide/svelte'
   import { clock } from '../clock.svelte'
   import CheckeredFlag from '../icons/CheckeredFlag.svelte'
   import { race } from '../socket.svelte.js'
@@ -92,17 +92,33 @@
     const s = Math.round((clock.now - ts) / 1000)
     return s < 60 ? `${s}s ago` : `${Math.floor(s / 60)}m ago`
   }
+
+  interface Props {
+    station?: string
+  }
+
+  let { station }: Props = $props()
 </script>
 
 <header
-  class="relative z-10 flex flex-wrap items-center gap-3 min-h-16 py-3 px-6 bg-white border-b border-zinc-200"
+  class="relative z-10 flex flex-wrap items-center gap-3 min-h-14 md:min-h-16 py-3 px-6 bg-white border-b border-zinc-200"
 >
   <span class="flex flex-col gap-0.5 min-w-0">
-    <span
-      class="text-base font-bold tracking-tight leading-tight whitespace-nowrap"
-    >
-      Beachside
-      <span class="font-normal text-zinc-500">Racetrack</span>
+    <span class="text-base font-bold leading-tight whitespace-nowrap">
+      {#if station}
+        <span class="flex items-center gap-1.5">
+          <a class="flex items-center gap-1 font-medium text-zinc-600" href="/">
+            <ArrowLeft class="size-4" />Home
+          </a>
+          <span class="text-zinc-300" aria-hidden="true">/</span>
+          <span class="text-zinc-950">{station}</span>
+        </span>
+      {:else}
+        <span class="tracking-tight">
+          Beachside
+          <span class="font-normal text-zinc-500">Racetrack</span>
+        </span>
+      {/if}
     </span>
     <span
       class="flex items-center gap-1.5 text-sm whitespace-nowrap {line.muted
